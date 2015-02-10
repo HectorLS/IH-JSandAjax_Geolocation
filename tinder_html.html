@@ -1,0 +1,94 @@
+<html>
+  <head>
+    <title>Tinder.js</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <script src="js/query.tinder.js"></script>
+    <script src="js/ajax.tinder.js"></script>
+    <script src="js/geolocation.tinder.js"></script>
+    <script src="js/storage.tinder.js"></script>
+    <script src="js/notifications.tinder.js"></script>
+  </head>
+  <body>
+    <!-- TinderQuery! -->
+    <script>
+      var t = window.Tinder;
+    </script>
+
+    <!-- TinderAjax! -->
+    <button id="getLocation" class="btn">Get My Location</button>
+    <script>
+      //Define outside the notification variable without value
+      var lat;
+      var lon;
+      var latlon;
+      var street;
+      var notification;
+      var button = t.query("#getLocation");
+      t.on(button, "click", function(event) {
+        // GETTING THE COORDS
+
+        // if (navigator.geolocation) {
+        //   navigator.geolocation.getCurrentPosition(onSuccess);
+        // }
+
+        // function onSuccess(position){
+        //   lat = position.coords.latitude;
+        //   lon = position.coords.longitude;
+        // }
+        lat = "41.385064";
+        lon = "2.173403";
+        console.log(lat, lon);
+        // document.querySelector("#lat").innerHTML = lat;
+        // document.querySelector("#lon").innerHTML = lon;
+      });
+    </script>
+
+    <!-- TinderAjax! -->
+    <button id="getAddress" class="btn">Get My Address</button>
+    <script>
+      var button = t.query("#getAddress");
+      t.on(button, "click", function(event) {
+        latlon = lat+","+lon; 
+        var addressUrl = "https://maps.googleapis.com/maps/api/geocode/json?latlng="+latlon+"&sensor=true_or_false";
+
+        t.ajax(addressUrl, "", function(response) {
+           var response = JSON.parse(this.responseText);
+            console.log(response.results[0].formatted_address);
+          // do something with response
+            street = response.results[0].formatted_address;
+            // document.querySelector("#street").innerHTML = street;
+        });
+      });
+    </script>
+
+    <!-- TinderStorage! -->
+    <button id="storeData" class="btn">Store Data</button>
+    <script>
+      var button = t.query("#storeData");
+      t.on(button, "click", function(event) {
+        // save geolocation and address in local storage
+        var mydata = {lat: lat, lon: lon, street: street}
+        t.store(mydata);
+      });
+    </script>
+
+    <!-- TinderNotification! -->
+    <button id="notifyData" class="btn">Notify Data</button>
+    <script>
+      var button = t.query("#notifyData");
+      t.on(button, "click", function(event) {
+        // display data in a notification
+        var gmap = "http://maps.googleapis.com/maps/api/staticmap?center=" + latlon +"&zoom=14&size=400x400&sensor=false";
+        var bodyContent = street + "(Coordenadas: " + latlon + ")";
+        var options = {icon: "gmap", body: bodyContent};
+        t.notify(options);
+      });
+    </script>
+
+    <ul>
+      <li id="js-lat"></li>
+      <li id="js-lon"></li>
+      <li id="js-street"></li>
+    </ul>
+  </body>
+</html>

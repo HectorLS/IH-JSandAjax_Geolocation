@@ -1,0 +1,2 @@
+var Tinder = window.Tinder || {};
+
