@@ -38,8 +38,8 @@
         lat = "41.385064";
         lon = "2.173403";
         console.log(lat, lon);
-        // document.querySelector("#lat").innerHTML = lat;
-        // document.querySelector("#lon").innerHTML = lon;
+        document.querySelector("#js-lat").innerHTML = lat;
+        document.querySelector("#js-lon").innerHTML = lon;
       });
     </script>
 
@@ -56,7 +56,7 @@
             console.log(response.results[0].formatted_address);
           // do something with response
             street = response.results[0].formatted_address;
-            // document.querySelector("#street").innerHTML = street;
+            document.querySelector("#js-street").innerHTML = street;
         });
       });
     </script>
@@ -78,9 +78,9 @@
       var button = t.query("#notifyData");
       t.on(button, "click", function(event) {
         // display data in a notification
-        var gmap = "http://maps.googleapis.com/maps/api/staticmap?center=" + latlon +"&zoom=14&size=400x400&sensor=false";
+        var gmap = "http://maps.googleapis.com/maps/api/staticmap?center=" + latlon + "&zoom=14&size=400x400&sensor=false";
         var bodyContent = street + "(Coordenadas: " + latlon + ")";
-        var options = {icon: "gmap", body: bodyContent};
+        var options = {icon: gmap, body: bodyContent};
         t.notify(options);
       });
     </script>
